@@ -15,7 +15,8 @@ class PubTest < MiniTest::Test
     # [name,money,age]
     @customer1 = Customer.new("Peter Whiffle",50,67)
     @customer2 = Customer.new("Janet Staples",25,23)
-    @customer3 = Customer.new("Jason Cup",695,17)
+    @customer3 = Customer.new("Jason Cup",695,19)
+    @customer4 = Customer.new("Crusty Juggler",1,9)
 
     @pub = Pub.new("The Jammy Dodger",[@drink1,@drink2,@drink3])
   end
@@ -25,6 +26,7 @@ class PubTest < MiniTest::Test
   end
 
   def test_g_and_t_price()
+    # assert_equal(3,@drink1.price())
     assert_equal(3,@drink1.price())
   end
 
@@ -40,11 +42,45 @@ class PubTest < MiniTest::Test
     assert_equal(18,@pub.age_limit)
   end
 
-  # def test_customer_buys_drink()
-  #   # what drink
-  #   # drink price
-  #   # can afford?
-  #   # old enough?
+  def test_does_drink_exist__false()
+    assert_equal(false,@pub.drink_exists("Bucket of bleach"))
+  end
   #
+  def test_does_drink_exist__true()
+    assert_equal(true,@pub.drink_exists("Gin and Tonic"))
+  end
+
+  def test_can_customer_afford_drink__true
+    assert_equal(true,@pub.can_afford(@customer1.money, @drink1.price))
+  end
+
+  def test_can_customer_afford_drink__false
+      assert_equal(false,@pub.can_afford(@customer4.money, @drink1.price))
+  end
+
+  def test_customer_age__true
+    assert_equal(true,@pub.age_check(@customer2.age))
+  end
+
+  def test_customer_age__false
+    assert_equal(false,@pub.age_check(@customer4.age))
+  end
+
+  def test_buy_drink
+    # what drink
+    assert_equal(true,@pub.drink_exists("Pint of Whisky"))
+    # drink price
+    assert_equal(600,@drink3.price)
+    # can afford?
+    assert_equal(true,@pub.can_afford(@customer4.money, @drink3.price))
+    # old enough?
+    assert_equal(true,@pub.age_check(@customer3.age))
+  end
+
+  # def customer_drunkedness__false
+  #   assert_equal(false,@pub)
   # end
+
+
+
 end
